@@ -317,6 +317,8 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 
 git clone https://github.com/solliancenet/advanced-dotnet-workshop
 
+git clone https://github.com/kendrahavens/DevIntersection2020.git
+
 sleep 20
 
 Stop-Transcript
