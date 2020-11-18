@@ -39,6 +39,8 @@ function InstallGit()
 
 function InstallAzureCli()
 {
+  Write-Host "Install Azure CLI." -ForegroundColor Yellow
+
   #install azure cli
   Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; 
   Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; 
@@ -110,8 +112,10 @@ function InstallDotNetCore($version)
     }
 }
 
-function InstallVisualStudio()
+function InstallVisualStudio($edition)
 {
+    Write-Host "Install Visual Studio." -ForegroundColor Yellow
+
     # Install Chocolatey
     if (!(Get-Command choco.exe -ErrorAction SilentlyContinue)) {
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))}
@@ -125,6 +129,8 @@ function InstallVisualStudio()
 
 function InstallDocker()
 {   
+    Write-Host "Install Docker." -ForegroundColor Yellow
+
     dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
     #WSL
  
@@ -134,13 +140,34 @@ function InstallDocker()
     #wsl --set-default-version 2
 }
 
-function UpdateVisualStudio()
+function UpdateVisualStudio($edition)
 {
+    Write-Host "Update Visual Studio." -ForegroundColor Yellow
+
+    $Edition = 'Enterprise';
+    $Channel = 'Release';
+    $channelUri = "https://aka.ms/vs/16/release";
+    $responseFileName = "vs";
+ 
+    $bootstrapper = "$intermedateDir\vs_$edition.exe"
+    $responseFile = "$PSScriptRoot\$responseFileName.json"
+    $channelId = (Get-Content $responseFile | ConvertFrom-Json).channelId
+    
+    $bootstrapperUri = "$channelUri/vs_$($Edition.ToLowerInvariant()).exe"
+    Write-Host "Downloading Visual Studio 2019 $Edition ($Channel) bootstrapper from $bootstrapperUri"
+
+    $WebClient = New-Object System.Net.WebClient
+    $WebClient.DownloadFile($bootstrapperUri,$bootstrapper)
+
+    & $bootstrapper update --quiet
+
     #update visual studio installer
-    & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update --quiet
+    #& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update --quiet
 
     #update visual studio
-    & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+    #& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+
+    #& $bootstrapper update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
 }
 
 
@@ -210,6 +237,8 @@ switch ($BuildEdition) {
 
 function InstallChrome()
 {
+    Write-Host "Installing Chrome." -ForegroundColor Yellow
+
     $Path = $env:TEMP; 
     $Installer = "chrome_installer.exe"; 
     Invoke-WebRequest "http://dl.google.com/chrome/install/375.126/chrome_installer.exe" -OutFile $Path\$Installer; 
@@ -332,11 +361,11 @@ InstallAzureCli;
 
 InstallPorter;
 
-InstallDocker;
+#InstallDocker;
 
 InstallChrome;
 
-InstallVisualStudio;
+#InstallVisualStudio;
 
 UpdateVisualStudio;
 
