@@ -86,7 +86,8 @@ function InstallDocker()
 
 function InstallDotNet5()
 {
-  $url = "https://download.visualstudio.microsoft.com/download/pr/21511476-7a5b-4bfe-b96e-3d9ebc1f01ab/f2cf00c22fcd52e96dfee7d18e47c343/dotnet-sdk-5.0.100-preview.7.20366.6-win-x64.exe";
+  #$url = "https://download.visualstudio.microsoft.com/download/pr/21511476-7a5b-4bfe-b96e-3d9ebc1f01ab/f2cf00c22fcd52e96dfee7d18e47c343/dotnet-sdk-5.0.100-preview.7.20366.6-win-x64.exe";
+  $url = "https://download.visualstudio.microsoft.com/download/pr/36a9dc4e-1745-4f17-8a9c-f547a12e3764/ae25e38f20a4854d5e015a88659a22f9/dotnet-runtime-5.0.0-win-x64.exe  "
   $output = "$env:TEMP\dotnet.exe";
   Invoke-WebRequest -Uri $url -OutFile $output; 
 
@@ -108,6 +109,40 @@ function InstallDotNetCore($version)
         write-host $_.exception.message;
     }
 }
+
+function InstallVisualStudio()
+{
+    # Install Chocolatey
+    if (!(Get-Command choco.exe -ErrorAction SilentlyContinue)) {
+        Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))}
+        
+        # Install Visual Studio 2019 Community version
+        #choco install visualstudio2019community -y
+
+        # Install Visual Studio 2019 Enterprise version
+        choco install visualstudio2019enterprise -y
+}
+
+function InstallDocker()
+{   
+    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    #WSL
+ 
+    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+    #wsl --set-default-version 2
+}
+
+function UpdateVisualStudio()
+{
+    #update visual studio installer
+    & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update --quiet
+
+    #update visual studio
+    & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+}
+
 
 function InstallVisualStudioCode($AdditionalExtensions)
 {
@@ -171,6 +206,15 @@ switch ($BuildEdition) {
       Write-Host "`nInstalling extension $extension..." -ForegroundColor Yellow
       & $codeCmdPath --install-extension $extension
   }
+}
+
+function InstallChrome()
+{
+    $Path = $env:TEMP; 
+    $Installer = "chrome_installer.exe"; 
+    Invoke-WebRequest "http://dl.google.com/chrome/install/375.126/chrome_installer.exe" -OutFile $Path\$Installer; 
+    Start-Process -FilePath $Path\$Installer -Args "/silent /install" -Verb RunAs -Wait; 
+    Remove-Item $Path\$Installer
 }
 
 function InstallNotepadPP()
@@ -288,6 +332,14 @@ InstallAzureCli;
 
 InstallPorter;
 
+InstallDocker;
+
+InstallChrome;
+
+InstallVisualStudio;
+
+UpdateVisualStudio;
+
 CreateLabFilesDirectory
 
 cd "c:\labfiles";
@@ -309,11 +361,6 @@ Connect-AzAccount -Credential $cred | Out-Null
          
 #install sql server cmdlets
 Install-Module -Name SqlServer
-
-#WSL
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
-#wsl --set-default-version 2
 
 git clone https://github.com/solliancenet/advanced-dotnet-workshop
 
