@@ -159,7 +159,9 @@ function UpdateVisualStudio($edition)
     $WebClient = New-Object System.Net.WebClient
     $WebClient.DownloadFile($bootstrapperUri,$bootstrapper)
 
-    & $bootstrapper update --quiet
+    #& $bootstrapper update --quiet
+
+    Start-Process $bootstrapper -Wait -ArgumentList 'update --quiet'
 
     #update visual studio installer
     #& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update --quiet
@@ -168,6 +170,8 @@ function UpdateVisualStudio($edition)
     #& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
 
     #& $bootstrapper update  --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+
+    Start-Process $bootstrapper -Wait -ArgumentList "update --quiet --norestart --installPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'"
 }
 
 
@@ -233,6 +237,11 @@ switch ($BuildEdition) {
       Write-Host "`nInstalling extension $extension..." -ForegroundColor Yellow
       & $codeCmdPath --install-extension $extension
   }
+}
+
+function InstallEdge()
+{
+  Get-AppXPackage -AllUsers -Name Microsoft.MicrosoftEdge | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" -Verbose}
 }
 
 function InstallChrome()
@@ -363,6 +372,8 @@ InstallPorter;
 
 #InstallDocker;
 
+InstallEdge;
+
 InstallChrome;
 
 #InstallVisualStudio;
@@ -392,6 +403,8 @@ Connect-AzAccount -Credential $cred | Out-Null
 Install-Module -Name SqlServer
 
 git clone https://github.com/solliancenet/advanced-dotnet-workshop
+
+sleep 20
 
 git clone https://github.com/kendrahavens/DevIntersection2020.git
 
