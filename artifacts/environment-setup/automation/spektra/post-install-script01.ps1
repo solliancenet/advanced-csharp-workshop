@@ -360,7 +360,7 @@ InstallDotNet5;
 
 InstallGit;
 
-InstallChocolaty
+InstallChocolaty;
 
 InstallFiddler;
 
