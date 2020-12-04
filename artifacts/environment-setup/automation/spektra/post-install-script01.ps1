@@ -410,6 +410,10 @@ git clone https://github.com/kendrahavens/DevIntersection2020.git
 
 sleep 20
 
+git clone https://github.com/KathleenDollard/sample-csharp-6-9.git
+
+sleep 20
+
 Stop-Transcript
 
 Restart-Computer -Force
