@@ -402,15 +402,17 @@ Connect-AzAccount -Credential $cred | Out-Null
 #install sql server cmdlets
 Install-Module -Name SqlServer
 
+cd "c:\labfiles";
+
 git clone https://github.com/solliancenet/advanced-dotnet-workshop
 
 sleep 20
 
-git clone https://github.com/kendrahavens/DevIntersection2020.git
+git clone https://github.com/kendrahavens/DevIntersection2020
 
 sleep 20
 
-git clone https://github.com/KathleenDollard/sample-csharp-6-9.git
+git clone https://github.com/KathleenDollard/sample-csharp-6-9
 
 sleep 20
 
