@@ -114,17 +114,23 @@ function InstallDotNetCore($version)
 
 function InstallVisualStudio($edition)
 {
-    Write-Host "Install Visual Studio." -ForegroundColor Yellow
+    Write-Host "Install Visual Studio [$edition]." -ForegroundColor Yellow
 
     # Install Chocolatey
-    if (!(Get-Command choco.exe -ErrorAction SilentlyContinue)) {
-        Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))}
+    if (!(Get-Command choco.exe -ErrorAction SilentlyContinue)) 
+    {
+        Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    }
         
-        # Install Visual Studio 2019 Community version
-        #choco install visualstudio2019community -y
+    if ($edition -eq "enterprise")
+    {
+      choco install visualstudio2019enterprise -y
+    }
 
-        # Install Visual Studio 2019 Enterprise version
-        choco install visualstudio2019enterprise -y
+    if ($edition -eq "community")
+    {
+      choco install visualstudio2019community -y
+    }
 }
 
 function InstallDocker()
@@ -377,6 +383,8 @@ InstallEdge;
 InstallChrome;
 
 #InstallVisualStudio;
+
+InstallVisualStudio "community";
 
 UpdateVisualStudio;
 
