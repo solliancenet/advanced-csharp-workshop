@@ -382,11 +382,16 @@ InstallEdge;
 
 InstallChrome;
 
-#InstallVisualStudio;
+$vsVersion = "community"
+InstallVisualStudio $vsVersion;
 
-InstallVisualStudio "community";
+UpdateVisualStudio $vsVersion;
 
-UpdateVisualStudio;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Azure" $true;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools" $true;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb" $true;
+AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio" $true;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git" $true;
 
 CreateLabFilesDirectory
 
