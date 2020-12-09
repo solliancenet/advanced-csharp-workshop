@@ -74,14 +74,6 @@ InstallVisualStudio $vsVersion $year;
 
 UpdateVisualStudio $vsVersion $year;
 
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Azure";
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools"
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb"
-AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio"
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git"
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Data" ;
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.DataScience" ;
-
 CreateLabFilesDirectory
 
 cd "c:\labfiles";
@@ -117,6 +109,14 @@ sleep 20
 git clone https://github.com/KathleenDollard/sample-csharp-6-9
 
 sleep 20
+
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools"
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb"
+AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio"
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git"
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Data" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.DataScience" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Azure";
 
 Stop-Transcript
 
