@@ -79,6 +79,8 @@ AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools
 AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb"
 AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio"
 AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git"
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Data" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.DataScience" ;
 
 CreateLabFilesDirectory
 
