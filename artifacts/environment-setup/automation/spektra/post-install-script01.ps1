@@ -37,9 +37,11 @@ DisableInternetExplorerESC
 
 EnableIEFileDownload
 
+InstallChocolaty;
+
 InstallAzPowerShellModule
 
-InstallNotepadPP
+InstallNotepadPP;
 
 $ext = @("ms-vscode.azurecli")
 InstallVisualStudioCode $ext
@@ -49,8 +51,6 @@ InstallDotNetCore "3.1"
 InstallDotNet5;
 
 InstallGit;
-
-InstallChocolaty;
 
 InstallFiddler;
 
